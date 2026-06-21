@@ -1,0 +1,127 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Doctly
+providerId: doctly-ai
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- Document Parsing
+- PDF
+- Markdown
+- Data Extraction
+- Plans
+description: >-
+  Doctly uses a credits-based, usage-metered model. Documents are billed by
+  page, with LITE (faster, default) and ULTRA (higher accuracy, multi-pass)
+  accuracy levels consuming credits at different rates. Custom extractors carry
+  a cost_type of PER_PAGE or PER_DOCUMENT and a cost_credits value visible via
+  the extractor API. New accounts can sign up for free starter credits. Exact
+  dollar-per-credit and per-page rates are not published in machine-readable
+  form on the public pricing page and are not reconciled in this artifact.
+notes: >-
+  Per-page credit rates for LITE and ULTRA, the dollar value of a credit, and
+  any subscription tiers are not publicly itemized as of the creation date.
+  Verify against doctly.ai/pricing and the in-app dashboard on reconciliation.
+sources:
+- https://doctly.ai/pricing
+- https://docs.doctly.ai
+- https://docs.doctly.ai/api-reference/introduction
+plans:
+- id: doctly-free-credits
+  name: Free Starter Credits
+  type: free
+  description: >-
+    New accounts receive free starter credits to evaluate document parsing and
+    extraction before purchasing additional credits.
+  entries:
+  - label: Starter Credits
+    name: free_credits
+    type: free
+    metric: credits
+    limit: -1
+    timeFrame: once
+    geo: global
+    unit: 1
+    price: free on signup (amount not publicly itemized)
+    userMultiplied: false
+  elements:
+  - name: Documents Parse (Markdown)
+  - name: Extract (Structured Data)
+- id: doctly-pay-as-you-go
+  name: Credits (Pay-as-you-go)
+  type: usage
+  description: >-
+    Purchase credits and consume them per page processed. LITE and ULTRA
+    accuracy levels draw credits at different rates; extractors charge per the
+    extractor's cost_type and cost_credits.
+  entries:
+  - label: Document Parse - LITE
+    name: parse_lite
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: credits per page (rate not publicly itemized)
+    userMultiplied: false
+  - label: Document Parse - ULTRA
+    name: parse_ultra
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: credits per page, higher than LITE (rate not publicly itemized)
+    userMultiplied: false
+  - label: Extractor (PER_PAGE)
+    name: extractor_per_page
+    type: usage
+    metric: pages
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: cost_credits per page (see extractor API)
+    userMultiplied: false
+  - label: Extractor (PER_DOCUMENT)
+    name: extractor_per_document
+    type: usage
+    metric: documents
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: cost_credits per document (see extractor API)
+    userMultiplied: false
+  elements:
+  - name: Documents Parse (Markdown)
+  - name: Extract (Structured Data)
+  - name: Status and Results
+- id: doctly-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Volume credit commitments, higher throughput, and negotiated terms for
+    high-volume document workloads. Contact Doctly.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Volume Credit Pricing
+  - name: Priority Processing
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

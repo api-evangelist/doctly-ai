@@ -1,0 +1,198 @@
+{
+  "info": {
+    "name": "Doctly API",
+    "description": {
+      "content": "Doctly converts PDF, DOCX, and image documents into clean Markdown or structured JSON via an asynchronous submit-then-poll REST API. Authenticate with a Bearer API key.",
+      "type": "text/plain"
+    },
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.doctly.ai/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Documents",
+      "description": {
+        "content": "Upload documents for Markdown conversion and retrieve results.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "List documents",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/documents?skip=0&limit=100",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "100" }
+              ]
+            },
+            "description": "Retrieve a paginated list of your documents with optional filtering."
+          },
+          "response": []
+        },
+        {
+          "name": "Process (upload) a document",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/documents",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents"]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] },
+                { "key": "accuracy", "value": "lite", "type": "text" },
+                { "key": "page_separator", "value": "true", "type": "text" },
+                { "key": "skip_images", "value": "false", "type": "text" },
+                { "key": "callback_url", "value": "", "type": "text" }
+              ]
+            },
+            "description": "Upload a PDF, DOCX, or image file (max 100MB) for async conversion to Markdown. accuracy=lite|ultra. Returns a PENDING document; poll GET /documents/{id}."
+          },
+          "response": []
+        },
+        {
+          "name": "Get a document",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{id}}"]
+            },
+            "description": "Poll a document by id; returns status and signed output_file_url when COMPLETED."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete a document",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/documents/{{id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["documents", "{{id}}"]
+            },
+            "description": "Delete a document and its associated files."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Extractors",
+      "description": {
+        "content": "Manage and run custom structured-data extractors.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "name": "List extractors",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/e?skip=0&limit=100",
+              "host": ["{{baseUrl}}"],
+              "path": ["e"],
+              "query": [
+                { "key": "skip", "value": "0" },
+                { "key": "limit", "value": "100" }
+              ]
+            },
+            "description": "Retrieve a list of active extractors for your account."
+          },
+          "response": []
+        },
+        {
+          "name": "Run an extractor",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/e/{{slug}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["e", "{{slug}}"]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] },
+                { "key": "callback_url", "value": "", "type": "text" }
+              ]
+            },
+            "description": "Execute an extractor (by slug) against a document file or url to produce structured output."
+          },
+          "response": []
+        },
+        {
+          "name": "Get an extractor",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/e/{{extractor_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["e", "{{extractor_id}}"]
+            },
+            "description": "Retrieve details of a specific extractor, including cost_type and cost_credits."
+          },
+          "response": []
+        },
+        {
+          "name": "Update an extractor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/e/{{extractor_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["e", "{{extractor_id}}"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"slug\": \"<string>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "description": "Update an existing extractor's name or slug."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete an extractor",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/e/{{extractor_id}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["e", "{{extractor_id}}"]
+            },
+            "description": "Delete an extractor (soft delete)."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

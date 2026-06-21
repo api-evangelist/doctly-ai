@@ -1,0 +1,107 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Doctly
+providerId: doctly-ai
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- Document Parsing
+- PDF
+- Markdown
+- Data Extraction
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Doctly spend. Doctly bills usage as credits consumed per page
+  of document processed, with LITE and ULTRA accuracy levels drawing credits at
+  different rates, plus per-page or per-document extractor charges (cost_type /
+  cost_credits). Cost scales primarily with pages processed and chosen accuracy
+  level. Exact credit-to-dollar conversion is not publicly itemized and is not
+  reconciled here.
+notes: >-
+  Per-page credit rates and the dollar value of a credit are not published in
+  machine-readable form; verify against doctly.ai/pricing on reconciliation.
+sources:
+- https://doctly.ai/pricing
+- https://docs.doctly.ai
+- https://docs.doctly.ai/api-reference/introduction
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Doctly
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Prepaid Credits
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+focusColumns:
+  ServiceName: Doctly
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Doctly
+  PublisherName: Doctly
+  InvoiceIssuerName: Doctly
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: pages_processed_lite
+  description: Pages converted to Markdown at LITE accuracy, billed in credits per page.
+  unit: pages
+  aggregation: sum
+  dimensions:
+  - account
+  - accuracy
+- name: pages_processed_ultra
+  description: Pages converted to Markdown at ULTRA accuracy (multi-pass), billed in credits per page at a higher rate.
+  unit: pages
+  aggregation: sum
+  dimensions:
+  - account
+  - accuracy
+- name: extractor_pages
+  description: Pages processed by a PER_PAGE extractor, billed at the extractor's cost_credits per page.
+  unit: pages
+  aggregation: sum
+  dimensions:
+  - account
+  - extractor
+- name: extractor_documents
+  description: Documents processed by a PER_DOCUMENT extractor, billed at the extractor's cost_credits per document.
+  unit: documents
+  aggregation: sum
+  dimensions:
+  - account
+  - extractor
+- name: credits_purchased
+  description: Prepaid credits purchased to fund document processing and extraction.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+principles:
+- name: Visibility
+  description: Track pages processed by accuracy level and extractor; reconcile against credit balance burn.
+- name: Allocation
+  description: Use separate API keys or extractors per workload/team to attribute credit spend to cost centers.
+- name: Optimization
+  description: >-
+    Default to LITE accuracy and only escalate to ULTRA for documents that
+    require it; use skip_images and page_range-style options to avoid
+    processing unnecessary content; right-size extractors (PER_PAGE vs
+    PER_DOCUMENT) to the workload.
+- name: Accountability
+  description: Assign owners per project/key and review credit consumption against budget regularly.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

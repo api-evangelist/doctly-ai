@@ -1,0 +1,111 @@
+aid: doctly-ai
+url: https://raw.githubusercontent.com/api-evangelist/doctly-ai/refs/heads/main/apis.yml
+name: Doctly
+kind: company
+description: Doctly is an AI document-to-Markdown and structured-data extraction API.
+  It converts PDFs, DOCX, and image files into clean Markdown or JSON via an asynchronous
+  submit-then-poll REST API, with LITE and ULTRA accuracy levels, optional custom
+  extractors for structured extraction, and webhook callbacks on completion.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI
+- Document Parsing
+- PDF
+- Markdown
+- Data Extraction
+- OCR
+created: '2026-06-21'
+modified: '2026-06-21'
+specificationVersion: '0.19'
+apis:
+- aid: doctly-ai:doctly-documents-parse-api
+  name: Doctly Documents Parse API
+  tags:
+  - Documents
+  - Parse
+  - Markdown
+  - PDF
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.doctly.ai/api-reference/documents/process
+  baseURL: https://api.doctly.ai/api/v1
+  properties:
+  - url: https://docs.doctly.ai/api-reference/documents/process
+    type: Documentation
+  - url: https://docs.doctly.ai/api-reference/introduction
+    type: APIReference
+  - url: openapi/doctly-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/doctly-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/doctly-ai.opencollection.json
+    type: OpenCollection
+  description: Upload a PDF, DOCX, or image file (or remote URL) for asynchronous AI
+    conversion to Markdown. Supports LITE and ULTRA accuracy levels, page separators,
+    image skipping, and webhook callbacks; output is retrieved via a signed
+    output_file_url once processing completes.
+- aid: doctly-ai:doctly-extract-api
+  name: Doctly Extract API
+  tags:
+  - Extract
+  - Structured Data
+  - JSON
+  - Extractors
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.doctly.ai/api-reference/extractors/run
+  baseURL: https://api.doctly.ai/api/v1
+  properties:
+  - url: https://docs.doctly.ai/api-reference/extractors/run
+    type: Documentation
+  - url: https://docs.doctly.ai/api-reference/introduction
+    type: APIReference
+  - url: openapi/doctly-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/doctly-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/doctly-ai.opencollection.json
+    type: OpenCollection
+  description: Run a named extractor against a document to produce structured JSON output.
+    List, retrieve, update, and delete extractors, each carrying a cost_type
+    (PER_PAGE or PER_DOCUMENT) and cost_credits.
+- aid: doctly-ai:doctly-status-results-api
+  name: Doctly Status and Results API
+  tags:
+  - Status
+  - Polling
+  - Results
+  - Webhooks
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.doctly.ai/api-reference/documents/get
+  baseURL: https://api.doctly.ai/api/v1
+  properties:
+  - url: https://docs.doctly.ai/api-reference/documents/get
+    type: Documentation
+  - url: https://docs.doctly.ai/api-reference/introduction
+    type: APIReference
+  - url: openapi/doctly-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/doctly-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/doctly-ai.opencollection.json
+    type: OpenCollection
+  description: Poll document status and retrieve results. List documents with filtering,
+    fetch a single document with signed output_file_url and file_url links, and delete
+    documents. Status moves through PENDING, PROCESSING, COMPLETED, FAILED, EXPIRED.
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/doctly-ai
+- type: Website
+  url: https://doctly.ai
+- type: Documentation
+  url: https://docs.doctly.ai
+- type: GitHubOrganization
+  url: https://github.com/doctly
+- type: Plans
+  url: plans/doctly-ai-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/doctly-ai-rate-limits.yml
+- type: FinOps
+  url: finops/doctly-ai-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

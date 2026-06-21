@@ -1,0 +1,91 @@
+aid: doctly-ai
+name: Doctly
+review:
+  question: Does Doctly expose a documented public WebSocket or streaming async API?
+  answer: false
+  date: '2026-06-21'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Doctly's API is an asynchronous submit-then-poll REST API. Documents are
+    uploaded via POST /documents (or POST /e/{slug} for extractors) and return
+    a record in PENDING status; clients then poll GET /documents/{id} until
+    status reaches COMPLETED (or FAILED/EXPIRED) to retrieve the signed
+    output_file_url. Optionally, an HTTP webhook callback is delivered to a
+    client-supplied callback_url on completion. No WebSocket (ws/wss) endpoint
+    and no Server-Sent Events (SSE) stream are documented, so no AsyncAPI
+    document was authored. The callback_url webhook is a one-shot outbound
+    HTTP POST, not a persistent streaming transport.
+findings:
+  summary: |
+    Doctly does not publish a documented public WebSocket or streaming API. The
+    platform exposes only REST (HTTPS) endpoints under
+    https://api.doctly.ai/api/v1, authenticated with a Bearer API key.
+    Processing is asynchronous: submit a document, then poll by id or receive a
+    webhook callback at a supplied callback_url. There is no realtime,
+    bidirectional, or SSE streaming surface documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.doctly.ai/api/v1
+      documented: true
+    - protocol: Webhook
+      scheme: https
+      note: One-shot outbound HTTP POST to a client-supplied callback_url on job completion. Not a streaming transport.
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events stream is documented; results are retrieved via polling or webhook callback.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in the Doctly API reference.
+  asyncModel:
+    pattern: submit-then-poll
+    submit:
+      - POST https://api.doctly.ai/api/v1/documents
+      - POST https://api.doctly.ai/api/v1/e/{slug}
+    poll:
+      - GET https://api.doctly.ai/api/v1/documents/{id}
+    statusEnum:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - EXPIRED
+    completionWebhook: callback_url (optional outbound HTTP POST)
+  endpointsConfirmedRest:
+    - GET    https://api.doctly.ai/api/v1/documents
+    - POST   https://api.doctly.ai/api/v1/documents
+    - GET    https://api.doctly.ai/api/v1/documents/{id}
+    - DELETE https://api.doctly.ai/api/v1/documents/{id}
+    - GET    https://api.doctly.ai/api/v1/e
+    - POST   https://api.doctly.ai/api/v1/e/{slug}
+    - GET    https://api.doctly.ai/api/v1/e/{extractor_id}
+    - PUT    https://api.doctly.ai/api/v1/e/{extractor_id}
+    - DELETE https://api.doctly.ai/api/v1/e/{extractor_id}
+sources:
+  - url: https://docs.doctly.ai/api-reference/introduction
+    type: APIReference
+    note: Lists REST base URL https://api.doctly.ai/api/v1; Bearer auth; no WebSocket/SSE.
+  - url: https://docs.doctly.ai/api-reference/documents/process
+    type: Documentation
+    note: POST /documents upload with accuracy lite/ultra and callback_url webhook; async PENDING response.
+  - url: https://docs.doctly.ai/api-reference/openapi.json
+    type: OpenAPI
+    note: Source OpenAPI confirming documents and extractors paths, schemas, and status/accuracy enums.
+  - url: https://github.com/doctly/doctly
+    type: SDK
+    note: Python SDK orchestrates upload-then-poll with wait_time/timeout; LITE default, ULTRA multi-pass.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE streaming protocol surface exists. Doctly's
+    asynchronous behavior is a submit-then-poll REST workflow plus an optional
+    one-shot webhook callback, neither of which is a streaming transport, so no
+    AsyncAPI document was created.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

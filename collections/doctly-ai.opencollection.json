@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doctly API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/documents"
+          },
+          "docs": "Retrieve a paginated list of your documents with optional filtering."
+        },
+        {
+          "info": {
+            "name": "Process (upload) a document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doctly.ai/api/v1/documents",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a PDF, DOCX, or image (or url) for async conversion to Markdown. accuracy=lite|ultra; optional callback_url."
+        },
+        {
+          "info": {
+            "name": "Get a document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/documents/{{id}}"
+          },
+          "docs": "Poll a document by id; returns status and signed output_file_url when COMPLETED."
+        },
+        {
+          "info": {
+            "name": "Delete a document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.doctly.ai/api/v1/documents/{{id}}"
+          },
+          "docs": "Delete a document and its associated files."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Extractors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List extractors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/e"
+          },
+          "docs": "Retrieve a list of active extractors for your account."
+        },
+        {
+          "info": {
+            "name": "Run an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doctly.ai/api/v1/e/{{slug}}",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Execute an extractor (by slug) against a document file or url to produce structured output."
+        },
+        {
+          "info": {
+            "name": "Get an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/e/{{extractor_id}}"
+          },
+          "docs": "Retrieve details of a specific extractor, including cost_type and cost_credits."
+        },
+        {
+          "info": {
+            "name": "Update an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.doctly.ai/api/v1/e/{{extractor_id}}",
+            "body": {
+              "type": "json",
+              "data": "{\n  \"name\": \"<string>\",\n  \"slug\": \"<string>\"\n}"
+            }
+          },
+          "docs": "Update an existing extractor's name or slug."
+        },
+        {
+          "info": {
+            "name": "Delete an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.doctly.ai/api/v1/e/{{extractor_id}}"
+          },
+          "docs": "Delete an extractor (soft delete)."
+        }
+      ]
+    }
+  ]
+}

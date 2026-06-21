@@ -1,0 +1,67 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Doctly
+providerId: doctly-ai
+created: '2026-06-21'
+modified: '2026-06-21'
+reconciled: false
+tags:
+- AI
+- Document Parsing
+- PDF
+- Markdown
+- Data Extraction
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Doctly API returns HTTP 429 when an account exceeds its request rate, and
+  enforces a hard 100MB per-file upload limit (HTTP 413). List endpoints cap
+  page size at 100 records. Specific per-account requests-per-minute / per-day
+  throttling thresholds are not published and are not reconciled in this
+  artifact; throughput is also effectively bounded by available credits.
+notes: >-
+  Confirm per-account request-rate ceilings, concurrency limits, and any
+  retry/backoff guidance in the Doctly dashboard or via support on
+  reconciliation. The documented 100MB file cap and pagination limit of 100 are
+  reconciled from the API reference.
+sources:
+- https://docs.doctly.ai/api-reference/introduction
+- https://docs.doctly.ai/api-reference/documents/process
+- https://docs.doctly.ai
+responseCodes:
+  throttled: 429
+  payloadTooLarge: 413
+limits:
+- name: Requests Per Minute
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Exceeding the rate returns HTTP 429; exact RPM not publicly documented.
+- name: Max File Size
+  scope: request
+  metric: bytes
+  limit: 104857600
+  notes: 100MB hard cap per uploaded document; exceeding returns HTTP 413.
+- name: List Page Size
+  scope: request
+  metric: records
+  limit: 100
+  notes: Maximum limit query value for GET /documents (default 100).
+- name: Credit Balance
+  scope: account
+  metric: credits
+  limit: per account credit balance
+  notes: Processing throughput is bounded by remaining purchased/free credits.
+policies:
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter on HTTP 429 responses.
+- name: Async Processing
+  description: >-
+    Documents process asynchronously; poll GET /documents/{id} at a reasonable
+    interval (SDK default ~5s) or use a callback_url webhook rather than tight
+    polling loops.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
