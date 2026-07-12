@@ -92,6 +92,10 @@ apis:
     fetch a single document with signed output_file_url and file_url links, and delete
     documents. Status moves through PENDING, PROCESSING, COMPLETED, FAILED, EXPIRED.
 common:
+- type: DomainSecurity
+  url: security/doctly-ai-domain-security.yml
+- type: Authentication
+  url: authentication/doctly-ai-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/doctly-ai
 - type: Website
