@@ -92,6 +92,8 @@ apis:
     fetch a single document with signed output_file_url and file_url links, and delete
     documents. Status moves through PENDING, PROCESSING, COMPLETED, FAILED, EXPIRED.
 common:
+- type: AgenticAccess
+  url: agentic-access/doctly-ai-agentic-access.yml
 - type: DomainSecurity
   url: security/doctly-ai-domain-security.yml
 - type: Authentication
