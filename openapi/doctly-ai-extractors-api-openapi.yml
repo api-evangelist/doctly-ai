@@ -1,0 +1,272 @@
+openapi: 3.0.1
+info:
+  title: Doctly Documents Extractors API
+  description: Doctly converts PDF, DOCX, and image documents into clean Markdown or structured JSON. Submit a document for asynchronous processing, then poll the document by id (or receive a webhook callback) to retrieve the signed output_file_url. Custom extractors run structured-data extraction against a document. All requests authenticate with a Bearer API key.
+  termsOfService: https://doctly.ai/terms
+  contact:
+    name: Doctly Support
+    url: https://docs.doctly.ai
+  version: '1.0'
+servers:
+- url: https://api.doctly.ai/api/v1
+security:
+- bearerAuth: []
+tags:
+- name: Extractors
+  description: Manage and run custom structured-data extractors.
+paths:
+  /e:
+    get:
+      operationId: listExtractors
+      tags:
+      - Extractors
+      summary: List extractors
+      description: Retrieve a list of active extractors for your account.
+      parameters:
+      - name: skip
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Pagination offset.
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 100
+        description: Records per page.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractorsPublic'
+        '401':
+          description: Unauthorized
+  /e/{slug}:
+    post:
+      operationId: runExtractor
+      tags:
+      - Extractors
+      summary: Run an extractor
+      description: Execute an extractor (by slug) against a document file or url to produce structured output asynchronously. Returns a document record; poll GET /documents/{id} or supply a callback_url.
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Extractor slug identifier.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RunExtractorRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentCreateExtractionResponse'
+        '404':
+          description: Not Found
+  /e/{extractor_id}:
+    get:
+      operationId: getExtractor
+      tags:
+      - Extractors
+      summary: Get an extractor
+      description: Retrieve details of a specific extractor.
+      parameters:
+      - name: extractor_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Extractor ID.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractorPublic'
+        '404':
+          description: Not Found
+    put:
+      operationId: updateExtractor
+      tags:
+      - Extractors
+      summary: Update an extractor
+      description: Update an existing extractor's name or slug.
+      parameters:
+      - name: extractor_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Extractor ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractorUpdate'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractorPublic'
+        '404':
+          description: Not Found
+    delete:
+      operationId: deleteExtractor
+      tags:
+      - Extractors
+      summary: Delete an extractor
+      description: Delete an extractor (soft delete).
+      parameters:
+      - name: extractor_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+        description: Extractor ID.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: Not Found
+components:
+  schemas:
+    DocumentCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        file_name:
+          type: string
+        file_size:
+          type: integer
+          description: Size in bytes.
+        page_count:
+          type: integer
+          nullable: true
+          description: Number of pages; null until processed.
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        accuracy:
+          $ref: '#/components/schemas/AccuracyLevel'
+        extractor_id:
+          type: string
+          format: uuid
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+    DocumentStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - EXPIRED
+      description: Lifecycle status of a document processing job.
+    RunExtractorRequest:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+          description: Document file to process.
+        url:
+          type: string
+          format: uri
+          description: Alternative to file - a remote document URL to fetch and process.
+        callback_url:
+          type: string
+          format: uri
+          description: Webhook URL notified when extraction completes.
+    ExtractorUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          minLength: 3
+          maxLength: 100
+    CostType:
+      type: string
+      enum:
+      - PER_PAGE
+      - PER_DOCUMENT
+      description: How an extractor's credits are charged.
+    DocumentCreateExtractionResponse:
+      allOf:
+      - $ref: '#/components/schemas/DocumentCreateResponse'
+      - type: object
+        properties:
+          extractor_id:
+            type: string
+            format: uuid
+          extractor:
+            $ref: '#/components/schemas/ExtractorPublic'
+    AccuracyLevel:
+      type: string
+      enum:
+      - lite
+      - ultra
+      default: lite
+      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+    ExtractorsPublic:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractorPublic'
+        count:
+          type: integer
+    ExtractorPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        cost_type:
+          $ref: '#/components/schemas/CostType'
+        cost_credits:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'Bearer API key, sent as `Authorization: Bearer YOUR_API_KEY`.'
