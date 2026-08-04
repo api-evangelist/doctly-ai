@@ -1,0 +1,16 @@
+{
+  "provider": "doctly-ai",
+  "sources": [
+    "doctly-ai-documents-api-openapi.yml",
+    "doctly-ai-extractors-api-openapi.yml"
+  ],
+  "outputs": [
+    "doctly-ai-documents-api-openapi.yml",
+    "doctly-ai-extractors-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
