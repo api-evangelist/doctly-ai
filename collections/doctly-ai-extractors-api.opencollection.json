@@ -1,0 +1,133 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doctly Documents Extractors API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extractors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List extractors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/e",
+            "params": [
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Records per page."
+              }
+            ]
+          },
+          "docs": "Retrieve a list of active extractors for your account."
+        },
+        {
+          "info": {
+            "name": "Run an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doctly.ai/api/v1/e/:slug",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path",
+                "description": "Extractor slug identifier."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Execute an extractor (by slug) against a document file or url to produce structured output asynchronously. Returns a document record; poll GET /documents/{id} or supply a callback_url."
+        },
+        {
+          "info": {
+            "name": "Get an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/e/:extractor_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Extractor ID."
+              }
+            ]
+          },
+          "docs": "Retrieve details of a specific extractor."
+        },
+        {
+          "info": {
+            "name": "Update an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.doctly.ai/api/v1/e/:extractor_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Extractor ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an existing extractor's name or slug."
+        },
+        {
+          "info": {
+            "name": "Delete an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.doctly.ai/api/v1/e/:extractor_id",
+            "params": [
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "path",
+                "description": "Extractor ID."
+              }
+            ]
+          },
+          "docs": "Delete an extractor (soft delete)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

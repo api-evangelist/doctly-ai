@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doctly Documents API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Documents",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List documents",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/documents",
+            "params": [
+              {
+                "name": "skip",
+                "value": "",
+                "type": "query",
+                "description": "Pagination offset."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Records per page (max 100)."
+              },
+              {
+                "name": "extractor_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by extractor."
+              },
+              {
+                "name": "no_extractor",
+                "value": "",
+                "type": "query",
+                "description": "Return only documents without an extractor."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Search by filename."
+              },
+              {
+                "name": "date_from",
+                "value": "",
+                "type": "query",
+                "description": "Start date filter (ISO 8601)."
+              },
+              {
+                "name": "date_to",
+                "value": "",
+                "type": "query",
+                "description": "End date filter (ISO 8601)."
+              }
+            ]
+          },
+          "docs": "Retrieve a paginated list of your documents with optional filtering."
+        },
+        {
+          "info": {
+            "name": "Process (upload) a document",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doctly.ai/api/v1/documents",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a document for asynchronous processing. Supports PDF, DOCX, and image files (PNG, JPG, JPEG, WEBP, GIF), max 100MB. Provide either a file or a url. Returns a document record in PENDING status; poll GET /documents/{id} or supply a callback_url for webhook notification."
+        },
+        {
+          "info": {
+            "name": "Get a document",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doctly.ai/api/v1/documents/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Document ID."
+              }
+            ]
+          },
+          "docs": "Retrieve detailed information about a specific document, including the signed output_file_url and file_url once processing is COMPLETED."
+        },
+        {
+          "info": {
+            "name": "Delete a document",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.doctly.ai/api/v1/documents/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Document ID."
+              }
+            ]
+          },
+          "docs": "Delete a document and its associated files."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
