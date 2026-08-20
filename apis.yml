@@ -21,6 +21,13 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/doctly-ai.png
 tags:
+- Artificial Intelligence
+- Document Parsing
+- PDF
+- Markdown
+- Data Extraction
+- OCR
+tags_raw:
 - AI
 - Document Parsing
 - PDF
