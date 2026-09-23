@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Doctly Documents Extractors API
+  title: Doctly Extractors API
   description: Doctly converts PDF, DOCX, and image documents into clean Markdown or structured JSON. Submit a document for asynchronous processing, then poll the document by id (or receive a webhook callback) to retrieve the signed output_file_url. Custom extractors run structured-data extraction against a document. All requests authenticate with a Bearer API key.
   termsOfService: https://doctly.ai/terms
   contact:
@@ -151,6 +151,47 @@ paths:
           description: Not Found
 components:
   schemas:
+    DocumentCreateExtractionResponse:
+      allOf:
+      - $ref: '#/components/schemas/DocumentCreateResponse'
+      - type: object
+        properties:
+          extractor_id:
+            type: string
+            format: uuid
+          extractor:
+            $ref: '#/components/schemas/ExtractorPublic'
+    DocumentStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - EXPIRED
+      description: Lifecycle status of a document processing job.
+    ExtractorUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          minLength: 3
+          maxLength: 100
+    AccuracyLevel:
+      type: string
+      enum:
+      - lite
+      - ultra
+      default: lite
+      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
     DocumentCreateResponse:
       type: object
       properties:
@@ -163,29 +204,31 @@ components:
           type: integer
           description: Size in bytes.
         page_count:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           description: Number of pages; null until processed.
         status:
           $ref: '#/components/schemas/DocumentStatus'
         accuracy:
           $ref: '#/components/schemas/AccuracyLevel'
         extractor_id:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         created_at:
           type: string
           format: date-time
-    DocumentStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - COMPLETED
-      - FAILED
-      - EXPIRED
-      description: Lifecycle status of a document processing job.
+    ExtractorsPublic:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractorPublic'
+        count:
+          type: integer
     RunExtractorRequest:
       type: object
       properties:
@@ -201,53 +244,12 @@ components:
           type: string
           format: uri
           description: Webhook URL notified when extraction completes.
-    ExtractorUpdate:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        slug:
-          type: string
-          minLength: 3
-          maxLength: 100
     CostType:
       type: string
       enum:
       - PER_PAGE
       - PER_DOCUMENT
       description: How an extractor's credits are charged.
-    DocumentCreateExtractionResponse:
-      allOf:
-      - $ref: '#/components/schemas/DocumentCreateResponse'
-      - type: object
-        properties:
-          extractor_id:
-            type: string
-            format: uuid
-          extractor:
-            $ref: '#/components/schemas/ExtractorPublic'
-    AccuracyLevel:
-      type: string
-      enum:
-      - lite
-      - ultra
-      default: lite
-      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
-    Message:
-      type: object
-      properties:
-        message:
-          type: string
-    ExtractorsPublic:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExtractorPublic'
-        count:
-          type: integer
     ExtractorPublic:
       type: object
       properties:
@@ -259,8 +261,9 @@ components:
         slug:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         cost_type:
           $ref: '#/components/schemas/CostType'
         cost_credits:

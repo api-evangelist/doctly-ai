@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Doctly Documents API
   description: Doctly converts PDF, DOCX, and image documents into clean Markdown or structured JSON. Submit a document for asynchronous processing, then poll the document by id (or receive a webhook callback) to retrieve the signed output_file_url. Custom extractors run structured-data extraction against a document. All requests authenticate with a Bearer API key.
@@ -148,65 +148,6 @@ paths:
           description: Not Found
 components:
   schemas:
-    DocumentCreateResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        file_name:
-          type: string
-        file_size:
-          type: integer
-          description: Size in bytes.
-        page_count:
-          type: integer
-          nullable: true
-          description: Number of pages; null until processed.
-        status:
-          $ref: '#/components/schemas/DocumentStatus'
-        accuracy:
-          $ref: '#/components/schemas/AccuracyLevel'
-        extractor_id:
-          type: string
-          format: uuid
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
-    DocumentStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - COMPLETED
-      - FAILED
-      - EXPIRED
-      description: Lifecycle status of a document processing job.
-    DocumentPublic:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        file_name:
-          type: string
-        file_size:
-          type: integer
-        page_count:
-          type: integer
-          nullable: true
-        status:
-          $ref: '#/components/schemas/DocumentStatus'
-        accuracy:
-          $ref: '#/components/schemas/AccuracyLevel'
-        extractor_id:
-          type: string
-          format: uuid
-          nullable: true
-        created_at:
-          type: string
-          format: date-time
     ProcessDocumentRequest:
       type: object
       properties:
@@ -236,15 +177,15 @@ components:
           type: string
           format: uri
           description: Webhook URL notified when processing completes.
-    DocumentsPublic:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentPublic'
-        count:
-          type: integer
+    DocumentStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - EXPIRED
+      description: Lifecycle status of a document processing job.
     AccuracyLevel:
       type: string
       enum:
@@ -257,24 +198,90 @@ components:
       properties:
         message:
           type: string
+    DocumentCreateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        file_name:
+          type: string
+        file_size:
+          type: integer
+          description: Size in bytes.
+        page_count:
+          type:
+          - integer
+          - 'null'
+          description: Number of pages; null until processed.
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        accuracy:
+          $ref: '#/components/schemas/AccuracyLevel'
+        extractor_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
     DocumentPublicWithLink:
       allOf:
       - $ref: '#/components/schemas/DocumentPublic'
       - type: object
         properties:
           output_file_url:
-            type: string
+            type:
+            - string
+            - 'null'
             format: uri
-            nullable: true
             description: Signed download link for the processed output (Markdown/JSON).
           file_url:
-            type: string
+            type:
+            - string
+            - 'null'
             format: uri
-            nullable: true
             description: Signed download link for the original uploaded file.
           output_file_name:
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
+    DocumentPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        file_name:
+          type: string
+        file_size:
+          type: integer
+        page_count:
+          type:
+          - integer
+          - 'null'
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        accuracy:
+          $ref: '#/components/schemas/AccuracyLevel'
+        extractor_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+    DocumentsPublic:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentPublic'
+        count:
+          type: integer
   securitySchemes:
     bearerAuth:
       type: http
