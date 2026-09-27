@@ -151,6 +151,38 @@ paths:
           description: Not Found
 components:
   schemas:
+    DocumentStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - EXPIRED
+      description: Lifecycle status of a document processing job.
+    ExtractorPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        cost_type:
+          $ref: '#/components/schemas/CostType'
+        cost_credits:
+          type: integer
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
     DocumentCreateExtractionResponse:
       allOf:
       - $ref: '#/components/schemas/DocumentCreateResponse'
@@ -161,15 +193,12 @@ components:
             format: uuid
           extractor:
             $ref: '#/components/schemas/ExtractorPublic'
-    DocumentStatus:
+    CostType:
       type: string
       enum:
-      - PENDING
-      - PROCESSING
-      - COMPLETED
-      - FAILED
-      - EXPIRED
-      description: Lifecycle status of a document processing job.
+      - PER_PAGE
+      - PER_DOCUMENT
+      description: How an extractor's credits are charged.
     ExtractorUpdate:
       type: object
       properties:
@@ -180,18 +209,6 @@ components:
           type: string
           minLength: 3
           maxLength: 100
-    AccuracyLevel:
-      type: string
-      enum:
-      - lite
-      - ultra
-      default: lite
-      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
-    Message:
-      type: object
-      properties:
-        message:
-          type: string
     DocumentCreateResponse:
       type: object
       properties:
@@ -244,30 +261,13 @@ components:
           type: string
           format: uri
           description: Webhook URL notified when extraction completes.
-    CostType:
+    AccuracyLevel:
       type: string
       enum:
-      - PER_PAGE
-      - PER_DOCUMENT
-      description: How an extractor's credits are charged.
-    ExtractorPublic:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        cost_type:
-          $ref: '#/components/schemas/CostType'
-        cost_credits:
-          type: integer
+      - lite
+      - ultra
+      default: lite
+      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
   securitySchemes:
     bearerAuth:
       type: http
