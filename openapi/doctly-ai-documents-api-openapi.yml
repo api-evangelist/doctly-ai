@@ -148,15 +148,6 @@ paths:
           description: Not Found
 components:
   schemas:
-    DocumentStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - COMPLETED
-      - FAILED
-      - EXPIRED
-      description: Lifecycle status of a document processing job.
     ProcessDocumentRequest:
       type: object
       properties:
@@ -186,27 +177,15 @@ components:
           type: string
           format: uri
           description: Webhook URL notified when processing completes.
-    DocumentPublicWithLink:
-      allOf:
-      - $ref: '#/components/schemas/DocumentPublic'
-      - type: object
-        properties:
-          output_file_url:
-            type:
-            - string
-            - 'null'
-            format: uri
-            description: Signed download link for the processed output (Markdown/JSON).
-          file_url:
-            type:
-            - string
-            - 'null'
-            format: uri
-            description: Signed download link for the original uploaded file.
-          output_file_name:
-            type:
-            - string
-            - 'null'
+    DocumentsPublic:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentPublic'
+        count:
+          type: integer
     DocumentPublic:
       type: object
       properties:
@@ -238,15 +217,22 @@ components:
       properties:
         message:
           type: string
-    DocumentsPublic:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentPublic'
-        count:
-          type: integer
+    DocumentStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - COMPLETED
+      - FAILED
+      - EXPIRED
+      description: Lifecycle status of a document processing job.
+    AccuracyLevel:
+      type: string
+      enum:
+      - lite
+      - ultra
+      default: lite
+      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
     DocumentCreateResponse:
       type: object
       properties:
@@ -275,13 +261,27 @@ components:
         created_at:
           type: string
           format: date-time
-    AccuracyLevel:
-      type: string
-      enum:
-      - lite
-      - ultra
-      default: lite
-      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
+    DocumentPublicWithLink:
+      allOf:
+      - $ref: '#/components/schemas/DocumentPublic'
+      - type: object
+        properties:
+          output_file_url:
+            type:
+            - string
+            - 'null'
+            format: uri
+            description: Signed download link for the processed output (Markdown/JSON).
+          file_url:
+            type:
+            - string
+            - 'null'
+            format: uri
+            description: Signed download link for the original uploaded file.
+          output_file_name:
+            type:
+            - string
+            - 'null'
   securitySchemes:
     bearerAuth:
       type: http
