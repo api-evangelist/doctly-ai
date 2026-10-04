@@ -151,6 +151,13 @@ paths:
           description: Not Found
 components:
   schemas:
+    AccuracyLevel:
+      type: string
+      enum:
+      - lite
+      - ultra
+      default: lite
+      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
     ExtractorUpdate:
       type: object
       properties:
@@ -161,32 +168,38 @@ components:
           type: string
           minLength: 3
           maxLength: 100
-    CostType:
-      type: string
-      enum:
-      - PER_PAGE
-      - PER_DOCUMENT
-      description: How an extractor's credits are charged.
-    RunExtractorRequest:
-      type: object
-      properties:
-        file:
-          type: string
-          format: binary
-          description: Document file to process.
-        url:
-          type: string
-          format: uri
-          description: Alternative to file - a remote document URL to fetch and process.
-        callback_url:
-          type: string
-          format: uri
-          description: Webhook URL notified when extraction completes.
     Message:
       type: object
       properties:
         message:
           type: string
+    ExtractorsPublic:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractorPublic'
+        count:
+          type: integer
+    ExtractorPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        cost_type:
+          $ref: '#/components/schemas/CostType'
+        cost_credits:
+          type: integer
     DocumentStatus:
       type: string
       enum:
@@ -196,23 +209,6 @@ components:
       - FAILED
       - EXPIRED
       description: Lifecycle status of a document processing job.
-    AccuracyLevel:
-      type: string
-      enum:
-      - lite
-      - ultra
-      default: lite
-      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
-    DocumentCreateExtractionResponse:
-      allOf:
-      - $ref: '#/components/schemas/DocumentCreateResponse'
-      - type: object
-        properties:
-          extractor_id:
-            type: string
-            format: uuid
-          extractor:
-            $ref: '#/components/schemas/ExtractorPublic'
     DocumentCreateResponse:
       type: object
       properties:
@@ -241,33 +237,37 @@ components:
         created_at:
           type: string
           format: date-time
-    ExtractorPublic:
+    RunExtractorRequest:
       type: object
       properties:
-        id:
+        file:
           type: string
-          format: uuid
-        name:
+          format: binary
+          description: Document file to process.
+        url:
           type: string
-        slug:
+          format: uri
+          description: Alternative to file - a remote document URL to fetch and process.
+        callback_url:
           type: string
-        description:
-          type:
-          - string
-          - 'null'
-        cost_type:
-          $ref: '#/components/schemas/CostType'
-        cost_credits:
-          type: integer
-    ExtractorsPublic:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
+          format: uri
+          description: Webhook URL notified when extraction completes.
+    DocumentCreateExtractionResponse:
+      allOf:
+      - $ref: '#/components/schemas/DocumentCreateResponse'
+      - type: object
+        properties:
+          extractor_id:
+            type: string
+            format: uuid
+          extractor:
             $ref: '#/components/schemas/ExtractorPublic'
-        count:
-          type: integer
+    CostType:
+      type: string
+      enum:
+      - PER_PAGE
+      - PER_DOCUMENT
+      description: How an extractor's credits are charged.
   securitySchemes:
     bearerAuth:
       type: http

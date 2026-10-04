@@ -148,6 +148,22 @@ paths:
           description: Not Found
 components:
   schemas:
+    AccuracyLevel:
+      type: string
+      enum:
+      - lite
+      - ultra
+      default: lite
+      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
+    DocumentsPublic:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentPublic'
+        count:
+          type: integer
     ProcessDocumentRequest:
       type: object
       properties:
@@ -177,41 +193,27 @@ components:
           type: string
           format: uri
           description: Webhook URL notified when processing completes.
-    DocumentsPublic:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DocumentPublic'
-        count:
-          type: integer
-    DocumentPublic:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        file_name:
-          type: string
-        file_size:
-          type: integer
-        page_count:
-          type:
-          - integer
-          - 'null'
-        status:
-          $ref: '#/components/schemas/DocumentStatus'
-        accuracy:
-          $ref: '#/components/schemas/AccuracyLevel'
-        extractor_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
+    DocumentPublicWithLink:
+      allOf:
+      - $ref: '#/components/schemas/DocumentPublic'
+      - type: object
+        properties:
+          output_file_url:
+            type:
+            - string
+            - 'null'
+            format: uri
+            description: Signed download link for the processed output (Markdown/JSON).
+          file_url:
+            type:
+            - string
+            - 'null'
+            format: uri
+            description: Signed download link for the original uploaded file.
+          output_file_name:
+            type:
+            - string
+            - 'null'
     Message:
       type: object
       properties:
@@ -226,13 +228,6 @@ components:
       - FAILED
       - EXPIRED
       description: Lifecycle status of a document processing job.
-    AccuracyLevel:
-      type: string
-      enum:
-      - lite
-      - ultra
-      default: lite
-      description: Conversion accuracy. lite is faster (default); ultra generates multiple versions per page and selects the most accurate, but takes longer.
     DocumentCreateResponse:
       type: object
       properties:
@@ -261,27 +256,32 @@ components:
         created_at:
           type: string
           format: date-time
-    DocumentPublicWithLink:
-      allOf:
-      - $ref: '#/components/schemas/DocumentPublic'
-      - type: object
-        properties:
-          output_file_url:
-            type:
-            - string
-            - 'null'
-            format: uri
-            description: Signed download link for the processed output (Markdown/JSON).
-          file_url:
-            type:
-            - string
-            - 'null'
-            format: uri
-            description: Signed download link for the original uploaded file.
-          output_file_name:
-            type:
-            - string
-            - 'null'
+    DocumentPublic:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        file_name:
+          type: string
+        file_size:
+          type: integer
+        page_count:
+          type:
+          - integer
+          - 'null'
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        accuracy:
+          $ref: '#/components/schemas/AccuracyLevel'
+        extractor_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
   securitySchemes:
     bearerAuth:
       type: http
