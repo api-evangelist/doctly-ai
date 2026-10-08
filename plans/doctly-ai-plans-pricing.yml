@@ -44,3 +44,36 @@ plans:
   included_quota: Unlimited document processing; dedicated infrastructure option; on-premise deployment
     option; 99.9%+ SLA
   overage: Custom
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - metered
+  units:
+  - object
+  - period
+  plans:
+  - name: Flexible
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - object
+    periods:
+    - other
+  - name: Professional
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - period
+    periods:
+    - month
+  - name: Enterprise
+    access: other
+    model: metered
+    model_how: derived
+    units: []
+    periods:
+    - none
