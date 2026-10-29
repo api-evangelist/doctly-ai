@@ -1,4 +1,4 @@
-# Doctly (doctly-ai)
+# Doctly
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,101 +66,119 @@
 
 Doctly is an AI document-to-Markdown and structured-data extraction API. It converts PDFs, DOCX, and image files into clean Markdown or JSON via an asynchronous submit-then-poll REST API, with LITE and ULTRA accuracy levels, optional custom extractors for structured extraction, and webhook callbacks on completion.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/doctly-ai/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/doctly-ai/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · Document Parsing · PDF · Markdown · Data Extraction · OCR
 
-## Tags
+## Doctly on APIs.io
 
-- AI
-- Document Parsing
-- PDF
-- Markdown
-- Data Extraction
-- OCR
+Everything profiled for Doctly is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/doctly-ai/](https://apis.io/providers/doctly-ai/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (2)
 
-- **Created:** 2026-06-21
-- **Modified:** 2026-06-21
+- [Doctly Documents API](https://apis.io/apis/doctly-ai/doctly-ai-documents-api/) — Upload documents for Markdown conversion and retrieve results.
+- [Doctly Extractors API](https://apis.io/apis/doctly-ai/doctly-ai-extractors-api/) — Manage and run custom structured-data extractors.
 
-## APIs
+### Published properties
 
-### Doctly Documents Parse API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Upload a PDF, DOCX, or image file (or remote URL) for asynchronous AI conversion to Markdown. Supports LITE and ULTRA accuracy levels, page separators, image skipping, and webhook callbacks; output is retrieved via a signed output_file_url once processing completes.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.doctly.ai/api-reference/documents/process](https://docs.doctly.ai/api-reference/documents/process)
-- **Base URL:** `https://api.doctly.ai/api/v1`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Doctly Ai Agentic Access](https://apis.io/agentic-access/doctly-ai/doctly-ai-agentic-access/)
 
-- Documents
-- Parse
-- Markdown
-- PDF
+#### Collections (3)
 
-#### Properties
+Postman and Open Collection request collections.
 
-- [Documentation](https://docs.doctly.ai/api-reference/documents/process)
-- [API Reference](https://docs.doctly.ai/api-reference/introduction)
-- [OpenAPI](openapi/doctly-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/doctly-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/doctly-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Doctly API](https://apis.io/collections/doctly-ai/open-doctly-ai/)
+- [Doctly Documents API](https://apis.io/collections/doctly-ai/open-doctly-ai-documents-api/)
+- [Doctly Documents Extractors API](https://apis.io/collections/doctly-ai/open-doctly-ai-extractors-api/)
 
-### Doctly Extract API
+#### Security (2)
 
-Run a named extractor against a document to produce structured JSON output. List, retrieve, update, and delete extractors, each carrying a cost_type (PER_PAGE or PER_DOCUMENT) and cost_credits.
+Authentication, trust centre, and vulnerability disclosure.
 
-- **Human URL:** [https://docs.doctly.ai/api-reference/extractors/run](https://docs.doctly.ai/api-reference/extractors/run)
-- **Base URL:** `https://api.doctly.ai/api/v1`
+- [Doctly Ai Authentication](https://apis.io/security/doctly-ai/doctly-ai-authentication/)
+- [Doctly Ai Domain Security](https://apis.io/security/doctly-ai/doctly-ai-domain-security/)
 
-#### Tags
+#### Plans and pricing (1)
 
-- Extract
-- Structured Data
-- JSON
-- Extractors
+Published plans, tiers and prices.
 
-#### Properties
+- [Doctly Ai Plans Pricing](https://apis.io/plans/doctly-ai/doctly-ai-plans-pricing/)
 
-- [Documentation](https://docs.doctly.ai/api-reference/extractors/run)
-- [API Reference](https://docs.doctly.ai/api-reference/introduction)
-- [OpenAPI](openapi/doctly-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/doctly-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/doctly-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Rate limits (1)
 
-### Doctly Status and Results API
+Published request limits.
 
-Poll document status and retrieve results. List documents with filtering, fetch a single document with signed output_file_url and file_url links, and delete documents. Status moves through PENDING, PROCESSING, COMPLETED, FAILED, EXPIRED.
+- [Doctly Ai Rate Limits](https://apis.io/rate-limits/doctly-ai/doctly-ai-rate-limits/)
 
-- **Human URL:** [https://docs.doctly.ai/api-reference/documents/get](https://docs.doctly.ai/api-reference/documents/get)
-- **Base URL:** `https://api.doctly.ai/api/v1`
+#### FinOps (1)
 
-#### Tags
+What the API costs to run, by operation.
 
-- Status
-- Polling
-- Results
-- Webhooks
+- [Doctly Ai Finops](https://apis.io/finops/doctly-ai/doctly-ai-finops/)
 
-#### Properties
+## Where to find this API
 
-- [Documentation](https://docs.doctly.ai/api-reference/documents/get)
-- [API Reference](https://docs.doctly.ai/api-reference/introduction)
-- [OpenAPI](openapi/doctly-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/doctly-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/doctly-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-## Common Properties
-
-- [LinkedIn](https://www.linkedin.com/company/doctly-ai)
 - [Website](https://doctly.ai)
 - [Documentation](https://docs.doctly.ai)
-- [GitHub Organization](https://github.com/doctly)
-- [Plans](plans/doctly-ai-plans-pricing.yml)
-- [Rate Limits](rate-limits/doctly-ai-rate-limits.yml)
-- [Fin Ops](finops/doctly-ai-finops.yml)
+- [Pricing](https://doctly.ai/pricing)
+- [Blog](https://doctly.ai/blog/)
+- [GitHub](https://github.com/doctly)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 34.5** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 52.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 42.1 |
+
+**Agent readiness 17.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 10.9** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/doctly-ai/](https://apis.io/providers/doctly-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Doctly: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/doctly-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
